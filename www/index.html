@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script src="js/lib/ClearBlade.js"></script>
+		<script>
+
+		var initOptions = {
+			URI:"https://platform.clearblade.com",
+			email:"locationSubmitter@clearblade.com",
+			password:"submitMe",
+			systemKey:"a0aad3fa0ad6c4bd97b8839a88aa01",
+			systemSecret:"A0AAD3FA0ABEC38AA9D5FFAAF98A01",
+			messagingURI:"platform.clearblade.com",
+			messagingPort:8904,
+			callback:reactToLogin
+		}
+
+		var cb = new ClearBlade();
+		cb.init(initOptions);
+		function reactToLogin(err, data){
+			if(err){
+				alert("Unable to connect");
+			}
+		}
+		function getLocation(){
+			navigator.geolocation.getCurrentPosition(submitLocation);
+		}
+		function submitLocation(data){
+			console.log(data);
+			var input = {
+				location_lat:data.coords.latitude,
+				location_long:data.coords.longitude
+			}
+			cb.Code().execute("submitLocation",input,function(err, data){
+ 				console.log(data);
+				if(err){
+					alert("Unable to submit location. Check your connection.");
+				}
+				else{
+					alert("Successful submission");
+				}
+			});
+		}	
+
+
+
+
+		</script>
+	<head>
+	<body>
+		<button style="width:200px;height:200px;background-color:#7FDBFF" onclick="getLocation()">Update Location</button>
+	<body>
+
+
+<html>
